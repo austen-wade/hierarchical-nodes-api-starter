@@ -1,0 +1,107 @@
+# Login
+# @name token
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "JohnDoe@test.com",
+  "password": "123456"
+}
+
+###
+
+@authToken = {{token.response.body.token}}
+
+# Get Node Tree
+GET http://localhost:3000/nodes/tree?depth=3
+Authorization: Bearer {{authToken}}
+
+###
+
+# Get Root Node
+
+GET http://localhost:3000/nodes/root
+Authorization: Bearer {{authToken}}
+
+###
+
+# Get Node
+
+GET http://localhost:3000/nodes/root/folder-1
+Authorization: Bearer {{authToken}}
+
+###
+
+# Get Root Node Children
+GET http://localhost:3000/nodes/root?children=asdf
+Authorization: Bearer {{authToken}}
+
+###
+
+# Get Node Children
+GET http://localhost:3000/nodes/root/folder-1?children=asdf
+Authorization: Bearer {{authToken}}
+
+###
+
+# Create a Root Node
+POST http://localhost:3000/nodes
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "root",
+  "type": "root",
+  "parent": null,
+  "children": []
+}
+
+###
+
+# Create Node under Root Node
+POST http://localhost:3000/nodes/root
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "folder-1",
+  "type": "folder"
+}
+
+###
+
+# Create Grandchild Node under Node
+POST http://localhost:3000/nodes/root/folder-1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "file-3",
+  "type": "file"
+}
+
+
+###
+
+# Update Node
+PUT http://localhost:3000/nodes/root/folder-1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "folder-1-updated"
+}
+
+###
+
+# Delete Node
+DELETE http://localhost:3000/nodes/root/folder-1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+###
+
+# Delete Root Node
+DELETE http://localhost:3000/nodes/root
+Authorization: Bearer {{authToken}}
+Content-Type: application/json

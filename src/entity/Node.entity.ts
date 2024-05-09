@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent, UpdateDateColumn } from "typeorm"
 
 @Entity({ name: 'nodes' })
 @Tree("closure-table")
@@ -12,6 +12,9 @@ export class Node {
 
   @TreeParent()
   parent: Node
+
+  @Column({ nullable: true })
+  parentId: number
 
   @TreeChildren()
   children: Node[]

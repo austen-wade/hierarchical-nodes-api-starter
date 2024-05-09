@@ -4,44 +4,10 @@ import { User } from "../entity/User.entity"
 import { AppDataSource } from "../data-source"
 import { UserResponse } from "../dto/user.dto"
 import * as cache from 'memory-cache'
+import { NotFound, Unauthorized } from "../helpers/errors"
+import { Store } from "../helpers/store"
 
 export class UserController {
-  static async signUp(req: Request, res: Response) {
-    const { name, email, password, role } = req.body
-
-    if (!name || !email || !password || !role) {
-      return res.status(400).json({ message: 'Missing required information' })
-    }
-
-    const encryptedPassword = await Encrypt.encryptPassword(password)
-    const user = new User()
-
-    user.name = name
-    user.email = email
-    user.password = encryptedPassword
-    user.role = role
-    user.active = true
-
-    try {
-      const userRepository = AppDataSource.getRepository(User)
-      await userRepository.save(user)
-
-      const userResponse = new UserResponse()
-      userResponse.name = user.name
-      userResponse.email = user.email
-      userResponse.role = user.role
-      userResponse.active = user.active
-
-      const token = Encrypt.generateToken({ id: user.id })
-
-      res.status(201).json({ user: userResponse, token })
-    } catch (error) {
-      if (error.errno === 19) {
-        return res.status(400).json({ message: 'Email already exists' })
-      }
-      return res.status(500).json({ message: 'Internal server error' })
-    }
-  }
 
   static async getUsers(req: Request, res: Response) {
     const cachedData = cache.get('users')
@@ -59,11 +25,10 @@ export class UserController {
 
   static async getUser(req: Request, res: Response) {
     const { id } = req.params
-    const userRepository = AppDataSource.getRepository(User)
-    const user = await userRepository.findOne({ where: { id } })
+    const user = await Store.getUserById(id)
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" })
+      return NotFound(res, "User not found")
     }
 
     return res.status(200).json({ user })
@@ -76,7 +41,7 @@ export class UserController {
     const user = await userRepository.findOne({ where: { id } })
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" })
+      return NotFound(res, "User not found")
     }
 
     user.name = name
@@ -96,7 +61,7 @@ export class UserController {
     const user = await userRepository.findOne({ where: { id } })
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" })
+      return NotFound(res, "User not found")
     }
 
     const encryptedPassword = await Encrypt.encryptPassword(password)
@@ -113,11 +78,21 @@ export class UserController {
     const user = await userRepository.findOne({ where: { id } })
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" })
+      return NotFound(res, "User not found")
     }
 
     await userRepository.remove(user)
 
     return res.status(204).json()
+  }
+
+  static async getProfile(req: Request, res: Response) {
+    return !req['currentUser']
+      ? Unauthorized(res)
+      : res.status(200).json({
+        user: new UserResponse(
+          await Store.getUserById(req['currentUser'].id)
+        )
+      })
   }
 }

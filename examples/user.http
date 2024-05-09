@@ -1,0 +1,47 @@
+# Login
+# @name token
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "JohnDoe@test.com",
+  "password": "123456"
+}
+
+
+###
+
+@authToken = {{token.response.body.token}}
+
+# Get Users
+
+GET http://localhost:3000/users
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+###
+
+# Get User Profile
+
+GET http://localhost:3000/users/f2d1ce3a-54e5-47ef-86e2-f2b89ae9b92a
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+###
+
+# Update User Profile
+
+PUT http://localhost:3000/users/f2d1ce3a-54e5-47ef-86e2-f2b89ae9b92a
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "John Doe Updated"
+}
+
+###
+
+# Delete User
+DELETE http://localhost:3000/users/f2d1ce3a-54e5-47ef-86e2-f2b89ae9b92a
+Authorization: Bearer {{authToken}}
+Content-Type: application/json

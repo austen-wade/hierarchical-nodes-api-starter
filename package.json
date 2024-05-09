@@ -26,8 +26,8 @@
     "winston": "^3.13.0"
   },
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "bun src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration": "typeorm-ts-node-commonjs migration:run -- -d ./src/data-source.ts"
+    "migration": "bunx typeorm-ts-node-commonjs migration:run -d ./src/data-source.ts"
   }
 }

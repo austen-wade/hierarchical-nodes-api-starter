@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express"
+import { InternalServerError } from "../helpers/errors"
 
 export const errorHandler = (
   error: Error,
@@ -7,5 +8,5 @@ export const errorHandler = (
   next: NextFunction,
 ) => {
   console.error(`Error: ${error.message}`)
-  res.status(500).json({ message: "Internal server error" })
+  InternalServerError(res)
 }
