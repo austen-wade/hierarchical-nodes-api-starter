@@ -28,6 +28,6 @@
   "scripts": {
     "start": "bun src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration": "bunx typeorm-ts-node-commonjs migration:run -d ./src/data-source.ts"
+    "schema:sync": "bunx typeorm-ts-node-commonjs schema:sync -d ./src/data-source.ts"
   }
 }
