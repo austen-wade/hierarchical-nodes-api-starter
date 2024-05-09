@@ -23,7 +23,6 @@ export const authentification = (
       return Unauthorized(res)
     }
 
-    console.log({ token });
     const decode = Encrypt.verifyToken(token)
     if (!decode) {
       return Unauthorized(res)
