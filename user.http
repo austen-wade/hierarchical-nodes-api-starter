@@ -1,0 +1,24 @@
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "JohnDoe@tux.com",
+  "password": "123456",
+  "role": "admin"
+}
+
+###
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "JohnDoe@tux.com",
+  "password": "123456"
+}
+
+###
+
+GET http://localhost:3000/auth/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5NjI4ZDY2LWIxYTctNDc2Yi05ZjI2LTQzMzc2ZWI1NWJmOSIsImlhdCI6MTcxNTIwOTk1MSwiZXhwIjoxNzE1Mjk2MzUxfQ.1SGYGqdfLiZl8WH-3-viFJOYNV6AvS44XZ1FlANagNQ
