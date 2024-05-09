@@ -10,6 +10,7 @@ Content-Type: application/json
 
 ###
 
+# @name token
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
@@ -20,5 +21,6 @@ Content-Type: application/json
 
 ###
 
+@authToken = {{token.response.body.token}}
 GET http://localhost:3000/auth/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5NjI4ZDY2LWIxYTctNDc2Yi05ZjI2LTQzMzc2ZWI1NWJmOSIsImlhdCI6MTcxNTIwOTk1MSwiZXhwIjoxNzE1Mjk2MzUxfQ.1SGYGqdfLiZl8WH-3-viFJOYNV6AvS44XZ1FlANagNQ
+Authorization: Bearer {{authToken}}
